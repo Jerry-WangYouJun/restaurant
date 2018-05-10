@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import wfu.hyg.pojo.Dish;
+import wfu.hyg.pojo.Grid;
 import wfu.hyg.pojo.User;
 import wfu.hyg.service.DishServiceImpl;
 import wfu.hyg.service.UserServiceImpl;
@@ -44,6 +46,9 @@ public class RestController {
 			session.setAttribute("username", name);	
 			session.setAttribute("userId", pojo.getId());
 			session.setAttribute("userBean", pojo);
+			if("1".equals(pojo.getRole())) {
+				return "forward:/index.jsp";
+			}
 			String dishAll = DishAll(session);
 			return dishAll;
 		}
@@ -51,6 +56,17 @@ public class RestController {
 		request.setAttribute("msg", msg);
 		return "Login";				
 	}
+	
+	@ResponseBody
+	@RequestMapping("/list")
+	public Grid getUserList(Model model) {
+		 Grid grid = new Grid();
+		 List<Dish> list = dishserviceImpl.dishAll();
+		 grid.setRows(list);
+		 grid.setTotal((long)list.size());
+		 return grid;
+	}
+	
 	@RequestMapping("/dishAll")
 	public String DishAll(HttpSession session){
 		List<Dish> dishAll = dishserviceImpl.dishAll();
@@ -66,9 +82,11 @@ public class RestController {
 
 	//添加菜品
 		@RequestMapping("/addDish")
-		public String addDish(HttpServletRequest request , Dish dish) {
+		public String addDish(HttpServletRequest request , Dish dish ,HttpSession session) {
 			 dishserviceImpl.addDish(dish);
 			int i=dish.getDish_id();
+			List<Dish> dishAll = dishserviceImpl.dishAll();
+			session.setAttribute("dishList", dishAll);
 			if(i>0){
 			return "Right";
 			}

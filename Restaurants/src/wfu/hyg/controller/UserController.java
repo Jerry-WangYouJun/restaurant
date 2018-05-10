@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import wfu.hyg.pojo.Grid;
 import wfu.hyg.pojo.User;
 import wfu.hyg.service.UserServiceImpl;
 
@@ -24,8 +25,21 @@ public class UserController {
 	@Resource(name="userServiceImpl")
 	private UserServiceImpl userService;
 	
+	
+	@ResponseBody
+	@RequestMapping("/list")
+	public Grid getUserList(Model model) {
+		 Grid grid = new Grid();
+		 List<User> list = userService.queryMeun();
+		 model.addAttribute("userList", list);
+		 grid.setRows(list);
+		 grid.setTotal((long)list.size());
+		 return grid;
+	}
+	
 	@RequestMapping("/userMenu")
 	public String getUserMeun(Model model) {
+		 
 		 List<User> list = userService.queryMeun();
 		 model.addAttribute("userList", list);
 		 return "userMenu";	
@@ -51,13 +65,34 @@ public class UserController {
 		return "user_add";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/user_add",method=RequestMethod.POST)
-	public String addUser(User user , Model model){
-		int i = this.userService.inserUser(user);
-		if(i>0){
-			return  "Right";
-			}
-			return "defeat";
+	public Map addUser(User user){
+		Map<String,Object> result = new HashMap<String,Object>();
+		int rows = this.userService.inserUser(user);
+		if (rows > 0) {
+			result.put("success", true);
+			result.put("msg", "保存成功!");
+		}else{
+			result.put("success", false);
+			result.put("msg", "保存失败，请联系管理员!");
+		}
+		return result;
+	}
+	
+	@ResponseBody   //转成JSON字符串
+	@RequestMapping(value="/user_update",method=RequestMethod.POST)
+	public Map updateUser(User user){
+		Map map = new HashMap();
+		int rows = this.userService.updateUser(user);
+		if (rows > 0) {
+			map.put("success", true);
+			map.put("msg", "修改用户成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "修改用户失败！");
+		}
+		return map;
 	}
 	
 	@RequestMapping(value="user_update_input/{id}",method=RequestMethod.GET)

@@ -14,7 +14,10 @@ public interface UserDao  {
 	public List<User> queryMeun();
 
 	public int updateMoney(User user);
+	
+	public int updateByPrimaryKey(User user);
 
 	public int updateCash(User user);
-		
+	
+	public int deleteByPrimaryKey(int id);
 }

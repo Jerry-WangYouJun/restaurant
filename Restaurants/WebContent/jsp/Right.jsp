@@ -12,7 +12,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 </head>
-
 		<style type="text/css">
 				body{
 					background-color: #FCF8E3;
@@ -107,8 +106,9 @@
 				            <li><a href="${pageContext.request.contextPath}/selectOrderByUser.action">历史订单</a></li>
 		  		 	  </c:when>
 		  		 </c:choose>
-		  		 	  <li><a  target="top" href="${pageContext.request.contextPath}/jsp/Login.jsp" style="cursor:hand">注销</a></li>
+		  		 	  <li><a  target="_top" href="${pageContext.request.contextPath}/jsp/Login.jsp" style="cursor:hand">注销</a></li>
 					  </ul>
+					  
 					</div>  
 			<div class="panel panel-default">
 		  	<div class="panel-heading">

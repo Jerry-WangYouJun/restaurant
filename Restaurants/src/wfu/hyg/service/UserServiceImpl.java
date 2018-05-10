@@ -34,12 +34,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public int updateUser(User user) {
-		 return userdao.updateMoney(user);
+		 return userdao.updateByPrimaryKey(user);
 	}
 
 	public int deleteUser(String id) {
 		// TODO Auto-generated method stub
-		return 0;
+		return userdao.deleteByPrimaryKey(Integer.valueOf(id));
 	}
 
 	public List<User> queryMeun() {
