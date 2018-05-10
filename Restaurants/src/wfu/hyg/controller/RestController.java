@@ -1,16 +1,25 @@
 package wfu.hyg.controller;
 
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.alibaba.fastjson.JSONObject;
+import com.common.CodeUtil;
+import com.pojo.OptionInfo;
 
 import wfu.hyg.pojo.Dish;
 import wfu.hyg.pojo.Grid;
@@ -80,6 +89,32 @@ public class RestController {
 		return "main";	
 	}
 
+	@RequestMapping("/option_situation")
+	public void  instSituation(OptionInfo info ,  HttpServletRequest request , HttpServletResponse response 
+			,@RequestParam("upfile") MultipartFile[] files) {
+		PrintWriter out;
+		try {
+			OptionInfo infoTemp = optionService.getOptionById(info.getId());
+			infoTemp.setSituation(info.getSituation());
+			for(MultipartFile file:files){
+				infoTemp.setImageName(file.getOriginalFilename());
+				String realPath=request.getServletContext().getRealPath("/uploadFile");
+				CodeUtil.SaveFileFromInputStream(file , realPath);
+			}
+			infoTemp.setStates("2");
+			optionService.update(infoTemp);
+			response.setContentType("text/html;charset=UTF-8");
+			out = response.getWriter();
+			JSONObject json = new JSONObject();
+			json.put("success", true);
+			json.put("msg", "操作成功");
+			out.println(json);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	//添加菜品
 		@RequestMapping("/addDish")
 		public String addDish(HttpServletRequest request , Dish dish ,HttpSession session) {
