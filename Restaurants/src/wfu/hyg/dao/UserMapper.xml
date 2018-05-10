@@ -11,7 +11,7 @@
 	select * from t_user where userName ='${username}' and password='${password}'
 </select>
 <select id="queryMeun"  resultMap="usermapper">
-	select * from t_user where role = 3  
+	select * from t_user   
 </select>
 <insert id="insert" parameterType="wfu.hyg.pojo.User">
 		insert into t_user(username,password,role) values
@@ -21,6 +21,15 @@
 		</selectKey>
 	</insert>
 	
+	<update id="updateByPrimaryKey" parameterType="wfu.hyg.pojo.User" >
+    update t_user
+    set 
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      role = #{role,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+	
 	<update id="updateMoney" parameterType="wfu.hyg.pojo.User" >
 		update t_user set money = '${money}' where id=#{id}
 	</update>
@@ -28,4 +37,9 @@
 	<update id="updateCash" parameterType="wfu.hyg.pojo.User" >
 		update t_user set money = money + '${money}' where id=#{id}
 	</update>
+	
+	 <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from  t_user
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
 </mapper>
