@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wfu.hyg.dao.UserDao">
+<resultMap type="wfu.hyg.pojo.User" id="usermapper">
+	<result column="id" property="id" />
+	<result column="userName" property="username"/>
+	<result column="password" property="password"/>
+	<result column="role" property="role"/>
+</resultMap>
+<select id="loginValiDate" parameterType="wfu.hyg.pojo.User" resultMap="usermapper">
+	select * from t_user where userName ='${username}' and password='${password}'
+</select>
+<select id="queryMeun"  resultMap="usermapper">
+	select * from t_user where role = 3  
+</select>
+<insert id="insert" parameterType="wfu.hyg.pojo.User">
+		insert into t_user(username,password,role) values
+		('${username}','${password}','${role}')
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="updateMoney" parameterType="wfu.hyg.pojo.User" >
+		update t_user set money = '${money}' where id=#{id}
+	</update>
+	
+	<update id="updateCash" parameterType="wfu.hyg.pojo.User" >
+		update t_user set money = money + '${money}' where id=#{id}
+	</update>
+</mapper>

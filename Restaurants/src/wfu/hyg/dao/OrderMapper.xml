@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wfu.hyg.dao.OrderDao">
+  <resultMap type="wfu.hyg.pojo.Order" id="ordermapper">
+  	<result column="order_id" property="order_id"/>
+	<result column="order_number" property="order_number"/>
+	<result column="order_name" property="order_name"/>
+	<result column="order_count" property="order_count"/>
+	<result column="order_price" property="order_price"/>
+	<result column="order_pricesum" property="order_pricesum"/>
+	<result column="order_table" property="order_table"/>
+	<result column="order_state" property="order_state"/>
+	<result column="location" property="location"/>
+	<result column="orderDate" property="orderDate"/>
+</resultMap>
+<insert id="insertAddOrder" parameterType="wfu.hyg.pojo.Order">
+insert into order1(order_number,order_name,order_count,order_price,order_pricesum,location,orderDate,order_state) 
+values('${order_number}','${order_name}','${order_count}','${order_price}','${order_pricesum}'
+,'${location}','${orderDate}','${order_state}')		
+<selectKey keyProperty="order_id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID() 
+</selectKey>
+</insert>
+
+<delete id="deleteOrder" parameterType="wfu.hyg.pojo.Order">
+delete  from order1 where order_id='${order_id}'
+</delete>
+
+<select id="selectOrder" parameterType="wfu.hyg.pojo.Order" resultMap="ordermapper">
+select * from order1 where order_number='${order_number}' 
+</select>
+
+<select id="selectOrderFen" parameterType="int" resultMap="ordermapper">
+select * from order1 limit #{index}, 10   
+</select>
+
+<select id="selectOrderAll" parameterType="wfu.hyg.pojo.Order" resultMap="ordermapper">
+select * from order1 
+</select>
+
+ <delete id="deleteOrderAll" parameterType="int" >
+        delete from order1 where order_id in
+        <foreach item="index" collection="array" open="(" separator="," close=")">
+            #{index}
+       </foreach>
+</delete>
+<update id="updeteOrder" parameterType="int">
+update order1 set order_state = 1 where order_id=#{id}
+</update>
+</mapper>

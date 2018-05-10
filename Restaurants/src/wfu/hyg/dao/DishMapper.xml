@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wfu.hyg.dao.DishDao">
+	<resultMap type="wfu.hyg.pojo.Dish" id="dishmapper">
+		<result column="Id" property="dish_id" />
+		<result column="dish_name" property="dish_name" />
+		<result column="dish_price" property="dish_price" />
+		<result column="dish_img" property="dish_img" />
+		<result column="dish_value" property="dish_value" />
+		<result column="dish_state" property="dish_state" />
+
+	</resultMap>
+
+	<insert id="addDish" parameterType="wfu.hyg.pojo.Dish">
+		insert into dish(dish_name,dish_price,dish_value,dish_state) values
+		('${dish_name}','${dish_price}','${dish_value}','${dish_state}')
+		<selectKey keyProperty="dish_id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<delete id="delDish" parameterType="wfu.hyg.pojo.Dish">
+		delete from dish where Id='${dish_id}'
+	</delete>
+	<update id="updatePriceById" parameterType="wfu.hyg.pojo.Dish">
+		update dish set dish_price='${dish_price}' ,dish_name='${dish_name}' ,dish_value= '${dish_value}'
+		, dish_state = '${dish_state}' where Id='${dish_id}'
+	</update>
+	<select id="selectDishFen" parameterType="int" resultMap="dishmapper">
+		select * from dish limit #{index},4
+	</select>
+	<select id="selectDish" parameterType="int" resultMap="dishmapper">
+		select * from dish where Id=#{id}
+	</select>
+	<select id="queryByName" parameterType="String" resultMap="dishmapper">
+		select * from dish where dish_name=#{name}
+	</select>
+	<select id="dishAll" resultMap="dishmapper">
+		select * from dish
+	</select>
+</mapper>
