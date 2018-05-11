@@ -39,7 +39,7 @@ public class OrderController {
 		List<Order> orderList = (List<Order>) session.getAttribute("orderbuyList");
 		double money = 0;
 		String state = "";
-		SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("hhmmss");   
+		SimpleDateFormat   sDateFormat   =   new   SimpleDateFormat("MMddhhmmss");   
 		String   date   =   sDateFormat.format(new java.util.Date()); 
 		int num = Integer.valueOf(date);
 		for(Order order : orderList) {

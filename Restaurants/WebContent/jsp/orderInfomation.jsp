@@ -43,12 +43,17 @@
 	   var a= $("#infoTable").bootstrapTable('getSelections');
 		  window.location.href="${pageContext.request.contextPath}/updeteOrder.action?order_id="+a[0].id;	
    }
+   
+   function orderDetail(){
+	   var a= $("#infoTable").bootstrapTable('getSelections');
+	   window.location.href="${pageContext.request.contextPath}/selectOrderDetail.action?order_number=" + a[0].orderid;
+   }
 
    $(function(){  
 	    $('#infoTable').bootstrapTable({  
 	        url : '${pageContext.request.contextPath}/selectOrderList.action', // 请求后台的URL（*）            
 	        method : 'get', // 请求方式（*）
-	        toolbar:"#toolbar",
+	        toolbar:'#toolbar',
 	        cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）  
 	        sidePagination : "client", // 分页方式：client客户端分页，server服务端分页（*）  
 	        pagination : true, // 是否显示分页（*）  
@@ -110,13 +115,17 @@
 				  <div class="panel-body">
 					  <table id="infoTable">
 					  </table>
-					  <c:if test="${userBean.role eq '3'} ">
+					  
 							  <div id="toolbar" class="btn-group">  
-					            <button id="btn_delete" type="button" class="btn btn-default" onclick="delDish()">  
+					  <c:if test="${userBean.role eq '3'}">
+							  <button id="btn_delete" type="button" class="btn btn-default" onclick="delDish()">  
 					                <span class="glyphicon glyphicon-usd" aria-hidden="true" ></span>付款  
+					            </button> 
+					  </c:if>
+					            <button id="btn_delete" type="button" class="btn btn-default" onclick="orderDetail()">  
+					                <span class="glyphicon glyphicon-list" aria-hidden="true" ></span>详情  
 					            </button>  
 					        </div> 
-					  </c:if>
 				  </div>
 			</div>
 		</div>
