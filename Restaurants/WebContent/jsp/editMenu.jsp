@@ -82,7 +82,7 @@
 									  		<c:otherwise>其他</c:otherwise>
 									  </c:choose>
 								</td>
-								<td align="center"><img src="image/bread.jpg" /></td>
+								<td align="center"><img src="/upload/${dish.dish_img}" /></td>
 								<td align="center"><input class="btn btn-default"type="button" value="编辑" onclick="updateDish(${dish.dish_id})"/></td>
 						    	<td align="center"><input class="btn btn-default" type="button" value="删除" onclick="delDish(${dish.dish_id})"/></td>
 							</tr>
