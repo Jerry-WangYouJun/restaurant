@@ -10,16 +10,36 @@
 <select id="loginValiDate" parameterType="wfu.hyg.pojo.User" resultMap="usermapper">
 	select * from t_user where userName ='${username}' and password='${password}'
 </select>
-<select id="queryMeun"  resultMap="usermapper">
-	select * from t_user where role = 3  
+
+<select id="queryMeun"  resultMap="usermapper" parameterType="wfu.hyg.pojo.User" >
+	select * from t_user   where 1 = 1 
+	 <if test="id != null and id != 0 " >
+        and id =  #{id}
+     </if>
 </select>
+
+<select id="querySeller"  resultMap="usermapper">
+	select * from t_user  where role = 2 
+</select>
+
 <insert id="insert" parameterType="wfu.hyg.pojo.User">
-		insert into t_user(username,password,role) values
-		('${username}','${password}','${role}')
+		insert into t_user(username,password,role,img) values
+		('${username}','${password}','${role}','${img}')
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
 			select LAST_INSERT_ID()
 		</selectKey>
 	</insert>
+	
+	<update id="updateByPrimaryKey" parameterType="wfu.hyg.pojo.User" >
+    update t_user
+    set 
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      role = #{role,jdbcType=VARCHAR},
+      money= #{money,jdbcType=DOUBLE},
+      img=#{img,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
 	
 	<update id="updateMoney" parameterType="wfu.hyg.pojo.User" >
 		update t_user set money = '${money}' where id=#{id}
@@ -28,4 +48,9 @@
 	<update id="updateCash" parameterType="wfu.hyg.pojo.User" >
 		update t_user set money = money + '${money}' where id=#{id}
 	</update>
+	
+	 <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from  t_user
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
 </mapper>
