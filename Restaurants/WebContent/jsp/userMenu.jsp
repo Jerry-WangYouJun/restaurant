@@ -85,7 +85,7 @@
 						<a href="${pageContext.request.contextPath}/selectDishFen.action?index=${index-1}">	<button type="button" class="btn btn-default" >上一页</button></a>	
 						<a href="${pageContext.request.contextPath}/selectDishFen.action?index=${index+1}">	<button type="button" class="btn btn-default" >下一页</button></a>
 							</div>
-							<a href=${pageContext.request.contextPath}/jsp/Right.jsp><button type="button" class="btn btn-default">返回</button></a>
+							<a href=${pageContext.request.contextPath}/jsp/Right2.jsp><button type="button" class="btn btn-default">返回</button></a>
 						</form>
 				  </div>
 			</div>

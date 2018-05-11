@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mysql.jdbc.StringUtils;
+
 import wfu.hyg.pojo.Order;
 import wfu.hyg.pojo.OrderBean;
 import wfu.hyg.pojo.User;
@@ -57,9 +59,13 @@ public class OrderController {
 				state="0";
 				request.setAttribute("msg", "账户余额不足，请充值或用现金交易");
 			}
+		}else{
+			state = "1";
 		}
+		int sid = (Integer)session.getAttribute("sellerId");
+		orderservice.insertOrder(new OrderBean(num, money + "", state, orderDate , user.getId(),cash,sid));
 		session.removeAttribute("orderbuyList");
-		orderservice.insertOrder(new OrderBean(num, money + "", state, orderDate , user.getId(),cash));
+		session.removeAttribute("sellerId");
 		return "main";
 	} 
 	@RequestMapping("/deleteorder")
@@ -98,7 +104,11 @@ public class OrderController {
 	public ModelAndView SelectOrderAll(HttpSession session){
 	    Map map = new HashMap<>();
 	    User user = (User)session.getAttribute("userBean");
-	    map.put("user", user.getId());
+	    if("2".equals(user.getRole())){
+			map.put("s_id", user.getId());
+		}else if("3".equals(user.getRole())){
+			map.put("user", user.getId());
+		}
 		List<OrderBean> selectOrder = orderservice.selectOrderAll(map);
 	    ModelAndView andView = new ModelAndView();
 	    andView.addObject("orderList", selectOrder);
@@ -136,21 +146,20 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/selectOrderFen")
-	public String SelectOrderFen(HttpServletRequest request){
-		Integer page;
-		if(request.getParameter("index")==null){
-			page=1;
-		}
-		else{page = Integer.parseInt(request.getParameter("index")); }							
-				if(page<=0||page==null){
-					page=1;
+	public String SelectOrderFen(HttpServletRequest request ){
+				User user = (User)request.getSession().getAttribute("userBean");
+				Map map = new HashMap();
+				if("2".equals(user.getRole())){
+					map.put("s_id", user.getId());
+				}else if("3".equals(user.getRole())){
+					map.put("user", user.getId());
 				}
-				int index=(page-1)*4;
-				List<Order> list = orderservice.selectOrderFen(index);
-				//model.addAttribute("orderList", list);
-				//model.addAttribute("index", page);
-				request.setAttribute("orderList",  getCountOrder(list));
-				request.setAttribute("index", page);
+				String state = request.getParameter("state");
+				if(!StringUtils.isNullOrEmpty(state)){
+					 map.put("state", state);
+				}
+				List<OrderBean> list = orderservice.selectOrderAll(map);
+				request.setAttribute("orderList",  list );
 				return "orderInfomation";
 	}
 	

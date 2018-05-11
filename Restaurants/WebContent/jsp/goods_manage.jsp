@@ -41,49 +41,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 	
     <script type="text/javascript">
-    	$(function(){
-			$('#dish_table').datagrid({
-				url:'${pageContext.request.contextPath}/list',
-				pagination: true,
-				toolbar:'#toolbar_dish',				
-				fitColumns: true,
-				singleSelect: true,
-				columns:[[
-					{field:'id', hidden:'true',editor:'textbox' },
-					{field:'dish_name',title:'菜品',width:100,align:'center'},
-					{field:'dish_price',title:'价格',width:100,align:'center',
-						formatter : function(value, row, index) {
-							return row.classInfo.experName;
-						}},
-					{field:'experTime',title:'实验时间',width:100,align:'center',
-							formatter : function(value, row, index) {
-								return row.classInfo.classDate;
-							}},
-					{field:'states',title:'实验状态',width:100,align:'center',
-						formatter : function(value, row, index) {
-							if (value == '1') {
-								return "已选课";
-							} else if (value == '0') {
-								return "已取消";
-							} else if(value =='2' ){
-								 return "已提交报告";
-							} else if(value == "3"){
-								return "教师已评价";
-							}
-						}},
-					{field:'judge',title:'教师评价',width:150,align:'center'},
-					{field:'situation',title:'学生试验情况',width:150,align:'center'},
-					{field:'imageName',title:'实验图片',width:150,align:'center',formatter:function(value,row,index){
-						if(value){
-							 return '<img style="width:100px;length:100px" border="1" src="${pageContext.request.contextPath}/uploadFile/' + value +'"/>'; 
-						}else{
-							return "";
-						}
-					}},				
-					{field:'remark',title:'备注',width:100,align:'center'}
-				]],				
-			});
-		});
 		function dish_add(){
 			var row = $('#dish_table').datagrid('getSelected');
 			if(row){

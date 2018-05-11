@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-import com.common.CodeUtil;
-import com.pojo.OptionInfo;
 
 import wfu.hyg.pojo.Dish;
 import wfu.hyg.pojo.Grid;
 import wfu.hyg.pojo.User;
 import wfu.hyg.service.DishServiceImpl;
 import wfu.hyg.service.UserServiceImpl;
+import wfu.hyg.util.CodeUtil;
 
 @Controller
 public class RestController {
@@ -78,31 +77,60 @@ public class RestController {
 	
 	@RequestMapping("/dishAll")
 	public String DishAll(HttpSession session){
-		List<Dish> dishAll = dishserviceImpl.dishAll();
-		
-		//String dishname = "cai1";
-		//String dishprice="12";
-		//session.setAttribute("dishname", dishname);
-		//session.setAttribute("dishprice", dishprice);
-		
-		session.setAttribute("dishList", dishAll);
+		User user = (User)session.getAttribute("userBean");
+		if("2".equals(user.getRole())){
+			List<Dish> dishAll = dishserviceImpl.queryByUser(user.getId());
+			session.setAttribute("dishList", dishAll);
+		}else{
+			List<User> dishAll = userserviceImpl.querySeller();
+			session.removeAttribute("sellerId");
+			session.setAttribute("sellerList", dishAll);
+			session.removeAttribute("orderbuyList");
+		}
 		return "main";	
 	}
 
-	@RequestMapping("/option_situation")
-	public void  instSituation(OptionInfo info ,  HttpServletRequest request , HttpServletResponse response 
-			,@RequestParam("upfile") MultipartFile[] files) {
+	@RequestMapping("/ajaxadd_dish")
+	public void  addDishAjax(Dish dish ,  HttpServletRequest request , HttpServletResponse response 
+			,HttpSession session,@RequestParam("upfile") MultipartFile[] files) {
 		PrintWriter out;
 		try {
-			OptionInfo infoTemp = optionService.getOptionById(info.getId());
-			infoTemp.setSituation(info.getSituation());
+			User user = (User)session.getAttribute("userBean");
+			dish.setUser_id(user.getId());
 			for(MultipartFile file:files){
-				infoTemp.setImageName(file.getOriginalFilename());
-				String realPath=request.getServletContext().getRealPath("/uploadFile");
-				CodeUtil.SaveFileFromInputStream(file , realPath);
+				dish.setDish_img(file.getOriginalFilename());
+				CodeUtil.SaveFileFromInputStream(file );
 			}
-			infoTemp.setStates("2");
-			optionService.update(infoTemp);
+			dishserviceImpl.addDish(dish);
+			List<Dish> dishAll = dishserviceImpl.queryByUser(user.getId());
+			session.setAttribute("dishList", dishAll);
+			response.setContentType("text/html;charset=UTF-8");
+			out = response.getWriter();
+			JSONObject json = new JSONObject();
+			json.put("success", true);
+			json.put("msg", "操作成功");
+			out.println(json);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/ajaxupdate_dish")
+	public void  ajaxupdateDish(Dish dish ,  HttpServletRequest request , HttpServletResponse response 
+			,HttpSession session,@RequestParam("upfile") MultipartFile[] files) {
+		PrintWriter out;
+		try {
+			User user = (User)session.getAttribute("userBean");
+			dish.setUser_id(user.getId());
+			for(MultipartFile file:files){
+				dish.setDish_img(file.getOriginalFilename());
+				CodeUtil.SaveFileFromInputStream(file );
+			}
+			dishserviceImpl.updatePriceById(dish);
+			List<Dish> dishAll = dishserviceImpl.queryByUser(user.getId());
+			session.setAttribute("dishList", dishAll);
 			response.setContentType("text/html;charset=UTF-8");
 			out = response.getWriter();
 			JSONObject json = new JSONObject();
@@ -117,10 +145,13 @@ public class RestController {
 	}
 	//添加菜品
 		@RequestMapping("/addDish")
-		public String addDish(HttpServletRequest request , Dish dish ,HttpSession session) {
+		public String addDish(HttpServletRequest request , Dish dish ,HttpSession session 
+				,@RequestParam("upfile") MultipartFile[] files) {
+			User user = (User)session.getAttribute("userBean");
+			dish.setUser_id(user.getId());
 			 dishserviceImpl.addDish(dish);
 			int i=dish.getDish_id();
-			List<Dish> dishAll = dishserviceImpl.dishAll();
+			List<Dish> dishAll = dishserviceImpl.queryByUser(user.getId());
 			session.setAttribute("dishList", dishAll);
 			if(i>0){
 			return "Right";
@@ -142,15 +173,21 @@ public class RestController {
 		}
 		//通过id更改菜品的价格
 		@RequestMapping("/updatePriceById")
-		public String updatePriceById(HttpServletRequest request,Dish dish,Model model){
-			int i=dishserviceImpl.updatePriceById(dish);
-			if(i>0){
-				request.setAttribute("index", 1);
-				String selectDishFen = this.SelectDishFen(request,model);
-				return selectDishFen;
-			}
-			return "defeat";
-			}
+		public String updatePriceById(HttpServletRequest request,Dish dish,Model model ,HttpSession session){
+			User user = (User)session.getAttribute("userBean");
+			dish.setUser_id(user.getId());
+			dishserviceImpl.updatePriceById(dish);
+			request.setAttribute("index", 1);
+			return this.SelectDishList(request,model,session);
+		}
+		
+		@RequestMapping("/selectDishList")
+		public String SelectDishList(HttpServletRequest request,Model model ,HttpSession session){
+			User user = (User)session.getAttribute("userBean");
+			List<Dish> list = dishserviceImpl.queryByUser(user.getId());
+			model.addAttribute("dishList", list);
+			return "editMenu";
+		}
 		
 		@RequestMapping("/selectDishFen")
 		public String SelectDishFen(HttpServletRequest request,Model model){
@@ -163,13 +200,13 @@ public class RestController {
 			if(page<=0||page==null){
 				page=1;
 			}
-					int index=(page-1)*4;
-					List<Dish> list = dishserviceImpl.selectDishFen(index);
-					model.addAttribute("dishList", list);
-					model.addAttribute("index", page);
-					//request.setAttribute("dishList", list);
-					//request.setAttribute("index", page);
-					return "editMenu";
+			int index=(page-1)*4;
+			List<Dish> list = dishserviceImpl.selectDishFen(index);
+			model.addAttribute("dishList", list);
+			model.addAttribute("index", page);
+			//request.setAttribute("dishList", list);
+			//request.setAttribute("index", page);
+			return "editMenu";
 		}
 		//根据ID查询菜品
 		@RequestMapping("/selectDishById")

@@ -9,6 +9,8 @@
 <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <jsp:include page="/common.jsp"></jsp:include>
+   <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 <title>Insert title here</title>
 </head>
 		<style>
@@ -52,7 +54,8 @@
 				  <div class="panel-body">
 					  	<div class="row">
 						  <div class="col-md-6 col-md-offset-3">
-							  	<form action="${pageContext.request.contextPath}/addDish.action" method="post">
+							  	<form id="dataForm" action="${pageContext.request.contextPath}/addDish.action" method="post"
+							  	 enctype="application/x-www-form-urlencoded">
 							  		<table class="table table-striped">
 										
 										<tr>
@@ -87,7 +90,8 @@
 										
 										<tr>
 											<td>图片上传</td>
-											<td><input name="picPath" type="file" class="upPic"/></td>
+												<td><input type="file" id="upfile" name="upfile" class="upPic"/>
+											</td>
 										</tr>
 										
 										<tr>
@@ -100,7 +104,7 @@
 										<tr>
 											<td></td>
 											<td>
-												<button class="btn btn-default" type="submit" style="margin-right: 60px;">新增</button>
+												<button class="btn btn-default" type="button" onclick="addDishNew()" style="margin-right: 60px;">新增</button>
 												<a href="${pageContext.request.contextPath}/jsp/Right.jsp"><button type="button" class="btn btn-default">返回</button></a>
 											</td>
 										</tr>													
@@ -114,5 +118,27 @@
 				  </div>
 			</div>
 		</div>
+		
+		<script type="text/javascript">
+			  function addDishNew(){
+				  $("#dataForm").ajaxSubmit({
+	  					url : "${pageContext.request.contextPath}/ajaxadd_dish.action",
+	  					type : 'post',
+	  					dataType : 'json',
+	  					success : function(obj) {
+	  						if (obj.success) {
+								alert(obj.msg);
+								parent.location.href="${pageContext.request.contextPath}/dishAll.action";
+							} else {
+								alert(obj.msg);
+							}
+	  					},
+	  					error : function(transport) {
+	  						$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
+	  					}
+	  				});
+			  }
+		
+		</script>
 </body>
 </html>

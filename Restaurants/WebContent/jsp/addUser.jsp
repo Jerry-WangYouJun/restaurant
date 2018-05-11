@@ -79,7 +79,7 @@
 											<td></td>
 											<td>
 												<button class="btn btn-default" type="submit" style="margin-right: 60px;">新增</button>
-												<a href="${pageContext.request.contextPath}/jsp/Right.jsp"><button type="button" class="btn btn-default">返回</button></a>
+												<a href="${pageContext.request.contextPath}/jsp/Right2.jsp"><button type="button" class="btn btn-default">返回</button></a>
 											</td>
 										</tr>													
 									</table>

@@ -12,6 +12,8 @@
 	src="${pageContext.request.contextPath}/bootstrap/js/jquery-3.2.1.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
+	<jsp:include page="/common.jsp"></jsp:include>
+   <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>更改价格</title>
@@ -60,13 +62,14 @@ a {
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3">
-						<form
+						<form id="dataForm"
 							action="${pageContext.request.contextPath}/updatePriceById.action"
-							method="post">
+							method="post" enctype="application/x-www-form-urlencoded">
 							<table class="table table-striped">
 								<c:forEach var="dish" items="${dishList}">
 									<tr>
-										<td>菜品ID</td>
+										<td>菜品ID <input type="hidden" value="${dish.user_id }"></td>
+							   
 										<td><input  name="dish_id" type="text" value="${dish.dish_id }" /></td>
 									</tr>
 									<tr>
@@ -97,7 +100,7 @@ a {
 									</tr>
 									<tr>
 										<td>图片上传</td>
-										<td><input name="picPath" type="file" class="upPic" /></td>
+										<td><input type="file" id="upfile" name="upfile" class="upPic"/></td>
 									</tr>
 									<tr>
 										<td></td>
@@ -106,8 +109,8 @@ a {
 									<tr>
 										<td></td>
 										<td>
-											<button class="btn btn-default" type="submit"
-												style="margin-right: 60px;">修改</button> <a
+											<button class="btn btn-default" type="button"
+												style="margin-right: 60px;" onclick="addDishNew()">修改</button> <a
 											href="${pageContext.request.contextPath}/jsp/Right.jsp"><button
 													type="button" class="btn btn-default">返回</button></a>
 										</td>
@@ -121,5 +124,27 @@ a {
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+			  function addDishNew(){
+				  $("#dataForm").ajaxSubmit({
+	  					url : "${pageContext.request.contextPath}/ajaxupdate_dish.action",
+	  					type : 'post',
+	  					dataType : 'json',
+	  					success : function(obj) {
+	  						if (obj.success) {
+								alert(obj.msg);
+								parent.location.href="${pageContext.request.contextPath}/dishAll.action";
+							} else {
+								alert(obj.msg);
+							}
+	  					},
+	  					error : function(transport) {
+	  						$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
+	  					}
+	  				});
+			  }
+		
+		</script>
 </body>
 </html>

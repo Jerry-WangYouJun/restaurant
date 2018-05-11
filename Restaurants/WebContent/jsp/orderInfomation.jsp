@@ -22,7 +22,7 @@
 	function selectOrder(){
 		var number = document.getElementById("order_number").value;
 		if(number==null||number==""){
-		   window.location.href="${pageContext.request.contextPath}/selectOrderAll.action";
+		   window.location.href="${pageContext.request.contextPath}/selectOrderFen.action";
 		}else{
 		   window.location.href="${pageContext.request.contextPath}/selectOrder.action?order_number="+number;		
 		}
@@ -49,8 +49,6 @@
 				  <div class="panel-body">
 						<form class="navbar-form navbar-left" action="" method="post">
 							<div class="form-group">
-								<label>日期:</label>
-								<input class="form-control" name="orderDate" id="registration-date" type="date">
 								<input type="text" id="order_number" class="form-control" placeholder="请输入订单号">
 								<button type="button" class="btn btn-default" onclick="selectOrder()">查询</button>
 							</div>
@@ -101,7 +99,7 @@
 						<a href="${pageContext.request.contextPath}/selectOrderFen.action?index=${index-1}">	<button type="button" class="btn btn-default" >上一页</button></a>	
 						<a href="${pageContext.request.contextPath}/selectOrderFen.action?index=${index+1}">	<button type="button" class="btn btn-default" >下一页</button></a>
 							</div>
-							<a href="${pageContext.request.contextPath}/jsp/Right.jsp"><button type="button" class="btn btn-default">返回</button></a>
+							<a href="${pageContext.request.contextPath}/dishAll.action" target="_parent"><button type="button" class="btn btn-default">返回</button></a>
 						</form>
 				  </div>
 			</div>

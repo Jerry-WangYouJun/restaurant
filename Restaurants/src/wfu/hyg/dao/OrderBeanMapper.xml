@@ -18,14 +18,17 @@
     <include refid="Base_Column_List" />
     from restant.order
     where 1=1
+	    <if test="s_id != null and s_id != 0 " >
+	        and s_id =  #{s_id}
+      </if>
        <if test="orderid != null and orderid != 0 " >
         and orderid =  #{orderid}
       </if>
         <if test="user != null and user != 0 " >
         and user =  #{user}
       </if>
-      <if test="states != null and states != ''" >
-        and states like #{states}
+      <if test="state != null and state != ''" >
+        and state = #{state}
       </if>
       <if test="className != null and className != ''" >
         and userId in (select id from t_user where position like CONCAT('%','${className}','%'))

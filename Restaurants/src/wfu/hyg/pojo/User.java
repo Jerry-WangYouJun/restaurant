@@ -1,9 +1,11 @@
 package wfu.hyg.pojo;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Service;
 
 @Service
-public class User {
+public class User  implements  Serializable {
 	private Integer id;
 	private String username;
 	private String password;

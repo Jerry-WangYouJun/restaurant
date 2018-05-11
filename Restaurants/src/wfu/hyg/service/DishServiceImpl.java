@@ -29,7 +29,6 @@ public class DishServiceImpl implements DishService {
 	}
 	@Override
 	public List<Dish> selectDishFen(int index) {
-		// TODO Auto-generated method stub
 		return dishDao.selectDishFen(index);
 	}
 	@Override
@@ -39,13 +38,15 @@ public class DishServiceImpl implements DishService {
 	}
 	@Override
 	public List<Dish> queryByName(String name) {
-		// TODO Auto-generated method stub
 		return dishDao.queryByName(name);
 	}
 	@Override
 	public List<Dish> dishAll() {
-		// TODO Auto-generated method stub
 		return dishDao.dishAll();
+	}
+	@Override
+	public List<Dish> queryByUser(Integer id) {
+		return dishDao.queryByUser(id);
 	}
 
 }

@@ -12,4 +12,5 @@ public interface DishService {
 	public List<Dish> selectDish(int id);
 	public List<Dish> queryByName(String name);
 	public List<Dish> dishAll();
+	List<Dish> queryByUser(Integer id);
 }

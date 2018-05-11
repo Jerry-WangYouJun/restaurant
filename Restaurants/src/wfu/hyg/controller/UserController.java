@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,7 @@ public class UserController {
 	@RequestMapping("/list")
 	public Grid getUserList(Model model) {
 		 Grid grid = new Grid();
-		 List<User> list = userService.queryMeun();
+		 List<User> list = userService.queryMeun(new User());
 		 model.addAttribute("userList", list);
 		 grid.setRows(list);
 		 grid.setTotal((long)list.size());
@@ -38,9 +39,12 @@ public class UserController {
 	}
 	
 	@RequestMapping("/userMenu")
-	public String getUserMeun(Model model) {
-		 
-		 List<User> list = userService.queryMeun();
+	public String getUserMeun(Model model , HttpSession session) {
+		 User user = (User)session.getAttribute("userBean");
+		 if("1".equals(user.getRole())){
+			   user = new User();
+		 }
+		 List<User> list = userService.queryMeun(user);
 		 model.addAttribute("userList", list);
 		 return "userMenu";	
 	}
@@ -52,6 +56,7 @@ public class UserController {
 		request.getSession().removeAttribute("userName");
 		request.getSession().removeAttribute("role");
 		request.getSession().removeAttribute("loged");
+		request.getSession().removeAttribute("sellerId");
 		Map<String,Object> result = new HashMap<String,Object>();
 			result.put("success", true);
 			result.put("msg", "退出成功!");
@@ -103,11 +108,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/updateCash",method=RequestMethod.GET)
-	public String updateUser(User user,Model model ,HttpServletRequest request){
+	public String updateUser(User user,Model model ,HttpServletRequest request , HttpSession session){
 		User  loginUser  = (User)request.getSession().getAttribute("userBean");
 		user.setMoney(user.getMoney());
 		int rows = this.userService.updateCash(user);
-		return getUserMeun(model);
+		return getUserMeun(model , session );
 	}
 	@ResponseBody
 	@RequestMapping(value="/user_delete",method=RequestMethod.POST)

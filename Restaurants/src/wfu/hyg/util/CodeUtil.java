@@ -26,7 +26,7 @@ public class CodeUtil {
 		}
 		
 		//tomcat配置 - <Context docBase="D:/nwfile/img" path="/img" />
-	    public static void SaveFileFromInputStream(MultipartFile pic , String realPath ) throws IOException
+	    public static void SaveFileFromInputStream(MultipartFile pic ) throws IOException
 	    {      
 	    	String osName =  System.getProperty("os.name");
         	String path =  System.getProperty("user.dir")  ;

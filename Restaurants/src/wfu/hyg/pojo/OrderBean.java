@@ -4,6 +4,8 @@ public class OrderBean {
     private Integer id;
 
     private Integer orderid;
+    
+    private Integer s_id;
 
     private String money;
 
@@ -76,8 +78,16 @@ public class OrderBean {
 		super();
 	}
 
+	public Integer getS_id() {
+		return s_id;
+	}
+
+	public void setS_id(Integer s_id) {
+		this.s_id = s_id;
+	}
+
 	public OrderBean(Integer orderid, String money, String state,
-			String orderdate , Integer user , String isCash) {
+			String orderdate , Integer user , String isCash , Integer s_id) {
 		super();
 		this.orderid = orderid;
 		this.money = money;
@@ -85,6 +95,7 @@ public class OrderBean {
 		this.orderdate = orderdate;
 		this.user = user ;
 		this.isCash = isCash;
+		this.s_id = s_id;
 	}
     
     

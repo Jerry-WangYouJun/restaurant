@@ -12,4 +12,5 @@ public interface DishDao {
 	public List<Dish> selectDish(int id);
 	public List<Dish> queryByName(String name);
 	public List<Dish> dishAll();
+	public List<Dish> queryByUser(int user_id);
 }

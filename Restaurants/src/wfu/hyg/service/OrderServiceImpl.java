@@ -31,12 +31,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Order> selectOrderFen(Integer index) {
-		// TODO Auto-generated method stub
-		return orderdao.selectOrderFen(index);
-	}
-
-	@Override
 	public int deleteOrderAll(Integer[] ids) {
 		// TODO Auto-generated method stub
 		return orderdao.deleteOrderAll(ids);
@@ -66,6 +60,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int updeteOrderState(Integer id) {
 		return mainOrderDao.updateOrderState(id);
+	}
+
+	@Override
+	public List<Order> selectOrderFen(OrderBean order) {
+		return orderdao.selectOrderFen(order);
 	}
 
 }

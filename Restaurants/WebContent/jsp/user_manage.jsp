@@ -52,9 +52,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'username',title:'姓名',width:100,align:'center'},
 					{field:'role',title:'角色',width:100,align:'center',
 						formatter : function(value, row, index) {
-							if(value =='1'){
+							if(value == 1){
 								 return '管理员';
-							}else if(value='2'){
+							}else if(value == 2){
 								 return '商户';
 							}else{
 								return '消费者';

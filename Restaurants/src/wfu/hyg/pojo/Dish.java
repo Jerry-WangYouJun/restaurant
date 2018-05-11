@@ -1,13 +1,15 @@
 package wfu.hyg.pojo;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Service;
 
 
 @Service
-public  class Dish {
+public  class Dish implements  Serializable {
 	//共用属性
 	public int dish_id;
-
+	private int user_id;
 	public double dish_price;
 	public String dish_name;
 	private String dish_img;
@@ -51,6 +53,10 @@ public  class Dish {
 	public void setDish_state(String dish_state) {
 		this.dish_state = dish_state;
 	}
-	
-	
+	public int getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
 }

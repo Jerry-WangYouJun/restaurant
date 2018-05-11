@@ -10,9 +10,18 @@
 <select id="loginValiDate" parameterType="wfu.hyg.pojo.User" resultMap="usermapper">
 	select * from t_user where userName ='${username}' and password='${password}'
 </select>
-<select id="queryMeun"  resultMap="usermapper">
-	select * from t_user   
+
+<select id="queryMeun"  resultMap="usermapper" parameterType="wfu.hyg.pojo.User" >
+	select * from t_user   where 1 = 1 
+	 <if test="id != null and id != 0 " >
+        and id =  #{id}
+     </if>
 </select>
+
+<select id="querySeller"  resultMap="usermapper">
+	select * from t_user  where role = 2 
+</select>
+
 <insert id="insert" parameterType="wfu.hyg.pojo.User">
 		insert into t_user(username,password,role) values
 		('${username}','${password}','${role}')

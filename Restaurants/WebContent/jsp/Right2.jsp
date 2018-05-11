@@ -77,20 +77,10 @@
 	
 	<script type="text/javascript">	   
 	function selectorder(){
+	     window.location.href="${pageContext.request.contextPath}/selectOrderFen.action?state="+0;
+	}
+	function selectorderAll(){
 	     window.location.href="${pageContext.request.contextPath}/selectOrderFen.action";
-	}
-	function selectdish1(){
-	
-	     window.location.href="${pageContext.request.contextPath}/selectDishFen.action?index="+1;
-	}
-	function returnMian(){
-		parent.location.href="${pageContext.request.contextPath}/dishAll.action";
-	}
-	function editDish(){
-		window.location.href="${pageContext.request.contextPath}/selectDishList.action";
-	}
-	function addDish(){
-		window.location.href="${pageContext.request.contextPath}/jsp/addGood.jsp";
 	}
 	</script>
 	</head>	
@@ -99,60 +89,32 @@
 		<div class="dropdown" style="display: inline;position: relative;left: 85%;">
 					  <a href="#" class="btn  btn-default" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list" style="width: 60px;"></span></a>
 					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-				<c:choose>
-		  		 	  <c:when test="${userBean.role eq '1' }">
-		  		 	  			<li><a  href="${pageContext.request.contextPath}/jsp/addUser.jsp" style="cursor:hand">新增用户</a></li>
-			           		    <li><a  href="${pageContext.request.contextPath}/user/userMenu.action" style="cursor:hand">用户充值</a></li>
-		  		 	  </c:when>
-		  		 	  <c:when test="${userBean.role eq '2' }">
-		  		 	  		 <li> <a href="${pageContext.request.contextPath}/jsp/addGood.jsp">菜品新增</a></li>
-				       		 <li><a href="#" onclick="selectorder()">历史订单</a></li>
-			            	 <li><a  href="${pageContext.request.contextPath}/selectDishList.action" style="cursor:hand">菜品编辑</a></li>
-		  		 	  </c:when>
-		  		 	  <c:when test="${userBean.role eq '3' }">
 			  		 		<li> <a>账户余额：${userBean.money}</a></li>
 				            <li><a  href="${pageContext.request.contextPath}/user/userMenu.action" style="cursor:hand">用户充值</a></li>
 				            <li><a href="${pageContext.request.contextPath}/selectOrderByUser.action">历史订单</a></li>
-		  		 	  </c:when>
-		  		 </c:choose>
 		  		 	  <li><a  target="_top" href="${pageContext.request.contextPath}/jsp/Login.jsp" style="cursor:hand">注销</a></li>
 					  </ul>
-					  
 					</div>  
 			<div class="panel panel-default">
 		  	<div class="panel-heading">
-			        <button type="button" class="btn btn-success">精致小炒</button>
-			        <button type="button" class="btn btn-success">全部</button>
-		  		  <c:choose>
-		  		 	  <c:when test="${userBean.role eq '2' }">
-		  		 	  		<button type="button" class="btn btn-success" onclick="addDish()">菜品新增</button>
-			  				<button type="button" class="btn btn-success" onclick="selectdish1()">菜品管理</button>
-					        <button type="button" class="btn btn-success" onclick="selectorder()">查询订单</button>
-		  		 	  </c:when>
-		  		 	   <c:when test="${userBean.role eq '3' }">
-					  		 <button type="button" class="btn btn-success" onclick="returnMian()">返回</button>
-		  		 	  </c:when>
-		  		 </c:choose>
+			        <button type="button" class="btn btn-success" onclick="selectorderAll()">全部订单</button>
+			        <button type="button" class="btn btn-success" onclick="selectorder()">未完成订单</button>
 			</div>
 			<div class="panel-body">				
 				<div class="row"> 		
-				<c:forEach items="${dishList}" var="list">								
-					<div class="col-md-2">
+				<c:forEach items="${sellerList}" var="list">								
+					<div class="col-md-3">
 							<span class="thumbnail">
-								<input type="hidden" value = "${list.user_id}"/>
-				      			<input type="hidden" value = "${list.dish_id}"/>
-				      			<img src="/upload/${list.dish_img}" class="img-rounded" alt="..."/>			      			
-				      			<h4 id="dishname1" name="dishname1">${list.dish_name}</h4>			      			
+				      			<input type="hidden" value = "${list.id}"/>
+				      			<img src="${pageContext.request.contextPath}/image/login.jpg" class="img-rounded" alt="..."/>			      			
 				      			<hr class="line">
 				      			<div class="row">
 				      				<div class="col-md-6 col-sm-6">
-				      					<p class="price" id="dishprice1">${list.dish_price}</p>
+				      					<p class="price" id="dishprice1">${list.username}</p>
 				      				</div>
-				      				<c:if test="${userBean.role eq '3' }">
-					      				<div class="col-md-6 col-sm-6">
-					      				 	<a href="${pageContext.request.contextPath}/dishbuy.action?name1=${list.dish_name}&price1=${list.dish_price}&id=${list.dish_id}&user_id=${list.user_id}" target="_parent"><button type="button" class="btn btn-primary btn_left">Buy</button></a>
-					      				</div>     				
-				      				</c:if>
+				      				<div class="col-md-6 col-sm-6">
+				      				 	<a href="${pageContext.request.contextPath}/userbuy.action?id=${list.id}" ><button type="button" class="btn btn-primary btn_left">进入商家</button></a>
+				      				</div>     				
 				      			</div>
 				    		</span>
 					</div>

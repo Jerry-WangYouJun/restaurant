@@ -11,7 +11,7 @@ public interface OrderService {
     public int insertAddOrder(Order order);
     public int deleteOrder(Order order);
     public List<Order> selectOrderDetail(Order order);
-	public List<Order> selectOrderFen(Integer index); 
+	public List<Order> selectOrderFen(OrderBean order); 
 	public int deleteOrderAll(Integer[] index);
 	public int updeteOrder(Integer id);
 	public List<OrderBean> selectOrderAll(Map map);

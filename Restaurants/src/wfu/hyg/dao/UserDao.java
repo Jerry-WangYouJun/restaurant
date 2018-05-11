@@ -11,7 +11,9 @@ public interface UserDao  {
 
 	public int insert(User user);
 
-	public List<User> queryMeun();
+	public List<User> queryMeun(User user);
+	
+	public List<User> querySeller();
 
 	public int updateMoney(User user);
 	
@@ -19,5 +21,5 @@ public interface UserDao  {
 
 	public int updateCash(User user);
 	
-	public int deleteByPrimaryKey(int id);
+	public int deleteByPrimaryKey(int id); 
 }

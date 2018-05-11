@@ -73,7 +73,15 @@
 							<tr>					  
 								<td align="center">${dish.dish_name}</td>
 								<td align="center">${dish.dish_price}</td>
-								<td align="center">${dish.dish_value}</td>
+								<td align="center">
+									  <c:choose>
+									  		<c:when test="${dish.dish_value eq 1 }">小吃</c:when>
+									  		<c:when test="${dish.dish_value eq 2 }">主食</c:when>
+									  		<c:when test="${dish.dish_value eq 3 }">菜品</c:when>
+									  		<c:when test="${dish.dish_value eq 4 }">酒水</c:when>
+									  		<c:otherwise>其他</c:otherwise>
+									  </c:choose>
+								</td>
 								<td align="center"><img src="image/bread.jpg" /></td>
 								<td align="center"><input class="btn btn-default"type="button" value="编辑" onclick="updateDish(${dish.dish_id})"/></td>
 						    	<td align="center"><input class="btn btn-default" type="button" value="删除" onclick="delDish(${dish.dish_id})"/></td>

@@ -7,17 +7,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import wfu.hyg.pojo.Dish;
 import wfu.hyg.pojo.Order;
+import wfu.hyg.service.DishServiceImpl;
    
 
 @Controller
 public class DishController {
+	
+	@Autowired
+	DishServiceImpl dishserviceImpl;
 	  int a=1;
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/dishbuy")
-      public String dishBuy(HttpServletRequest request,HttpServletResponse response,HttpSession session, int id ){	    	
+      public String dishBuy(HttpServletRequest request,HttpServletResponse response,HttpSession session
+    		  , int id, int user_id ){	    	
 		List<Order> orderList = (List<Order>) session.getAttribute("orderbuyList");
 	  //   String count=request.getParameter("count")
 		 String name1=request.getParameter("name1");
@@ -45,11 +53,20 @@ public class DishController {
 	    // order.setOrder_count(Integer.parseInt(count));
 //	     session.setAttribute("count", 1);
 	     session.setAttribute("orderbuyList", orderList);
+	     session.setAttribute("sellerId", user_id);
 	    return dishBuyMain(request, session);
 	}				
 	@RequestMapping("d")
     public String dishBuyMain(HttpServletRequest request,HttpSession session ){
-		return "main";		
+		return "main";		 
+	}
+	
+	@RequestMapping("/userbuy")
+    public String dishList(HttpServletRequest request , HttpSession session ){
+		String id = request.getParameter("id");
+		List<Dish> dishAll = dishserviceImpl.queryByUser(Integer.valueOf(id));
+		session.setAttribute("dishList", dishAll);
+		return "Right";		
 	}
 	
 	@RequestMapping("/dishdelete")
