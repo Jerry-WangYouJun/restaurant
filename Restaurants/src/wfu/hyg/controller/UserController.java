@@ -1,11 +1,14 @@
 package wfu.hyg.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -15,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import wfu.hyg.pojo.Grid;
 import wfu.hyg.pojo.User;
 import wfu.hyg.service.UserServiceImpl;
+import wfu.hyg.util.CodeUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -72,8 +77,18 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value="/user_add",method=RequestMethod.POST)
-	public Map addUser(User user){
+	public Map addUser(User user ,@RequestParam("upfile") MultipartFile[] files
+			, HttpServletResponse response ){
 		Map<String,Object> result = new HashMap<String,Object>();
+		PrintWriter out;
+		try {
+			for(MultipartFile file:files){
+				user.setImg(file.getOriginalFilename());
+				CodeUtil.SaveFileFromInputStream(file );
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		int rows = this.userService.inserUser(user);
 		if (rows > 0) {
 			result.put("success", true);
@@ -87,8 +102,18 @@ public class UserController {
 	
 	@ResponseBody   //转成JSON字符串
 	@RequestMapping(value="/user_update",method=RequestMethod.POST)
-	public Map updateUser(User user){
+	public Map updateUser(User user ,@RequestParam("upfile") MultipartFile[] files
+			, HttpServletResponse response){
 		Map map = new HashMap();
+		PrintWriter out;
+		try {
+			for(MultipartFile file:files){
+				user.setImg(file.getOriginalFilename());
+				CodeUtil.SaveFileFromInputStream(file );
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		int rows = this.userService.updateUser(user);
 		if (rows > 0) {
 			map.put("success", true);

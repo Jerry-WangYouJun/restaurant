@@ -11,6 +11,7 @@ public class User  implements  Serializable {
 	private String password;
 	private String role;
 	private Double money;
+	private String img;
 	public User(String username, String password) {
 		
 		this.username = username;
@@ -47,4 +48,11 @@ public class User  implements  Serializable {
 	public void setMoney(Double money) {
 		this.money = money;
 	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
+	
 }

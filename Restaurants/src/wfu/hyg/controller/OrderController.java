@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mysql.jdbc.StringUtils;
@@ -143,6 +144,26 @@ public class OrderController {
 				//model.addAttribute("index", page);
 				request.setAttribute("orderList", list);
 				return "orderInfomation";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/selectOrderList")
+	public List<OrderBean> SelectOrderList(HttpServletRequest request ){
+				User user = (User)request.getSession().getAttribute("userBean");
+				Map map = new HashMap();
+				if("2".equals(user.getRole())){
+					map.put("s_id", user.getId());
+				}else if("3".equals(user.getRole())){
+					map.put("user", user.getId());
+				}
+				String state = request.getParameter("state");
+				if(!StringUtils.isNullOrEmpty(state)){
+					 map.put("state", state);
+				}
+				List<OrderBean> list = orderservice.selectOrderAll(map);
+				request.setAttribute("orderList",  list );
+				return list;
 	}
 	
 	@RequestMapping("/selectOrderFen")

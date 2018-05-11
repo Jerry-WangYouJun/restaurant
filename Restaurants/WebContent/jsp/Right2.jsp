@@ -80,7 +80,7 @@
 	     window.location.href="${pageContext.request.contextPath}/selectOrderFen.action?state="+0;
 	}
 	function selectorderAll(){
-	     window.location.href="${pageContext.request.contextPath}/selectOrderFen.action";
+	     window.location.href="${pageContext.request.contextPath}/jsp/orderInfomation.jsp";
 	}
 	</script>
 	</head>	
@@ -90,15 +90,13 @@
 					  <a href="#" class="btn  btn-default" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list" style="width: 60px;"></span></a>
 					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 			  		 		<li> <a>账户余额：${userBean.money}</a></li>
-				            <li><a  href="${pageContext.request.contextPath}/user/userMenu.action" style="cursor:hand">用户充值</a></li>
 				            <li><a href="${pageContext.request.contextPath}/selectOrderByUser.action">历史订单</a></li>
 		  		 	  <li><a  target="_top" href="${pageContext.request.contextPath}/jsp/Login.jsp" style="cursor:hand">注销</a></li>
 					  </ul>
 					</div>  
 			<div class="panel panel-default">
 		  	<div class="panel-heading">
-			        <button type="button" class="btn btn-success" onclick="selectorderAll()">全部订单</button>
-			        <button type="button" class="btn btn-success" onclick="selectorder()">未完成订单</button>
+			        <button type="button" class="btn btn-success" onclick="selectorderAll()">查询订单</button>
 			</div>
 			<div class="panel-body">				
 				<div class="row"> 		
@@ -106,7 +104,7 @@
 					<div class="col-md-3">
 							<span class="thumbnail">
 				      			<input type="hidden" value = "${list.id}"/>
-				      			<img src="${pageContext.request.contextPath}/image/login.jpg" class="img-rounded" alt="..."/>			      			
+				      			<img src="/upload/${list.img}" class="img-rounded" alt="..."/>			      			
 				      			<hr class="line">
 				      			<div class="row">
 				      				<div class="col-md-6 col-sm-6">

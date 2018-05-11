@@ -9,10 +9,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import wfu.hyg.pojo.Dish;
+import wfu.hyg.pojo.Grid;
 import wfu.hyg.pojo.Order;
+import wfu.hyg.pojo.User;
 import wfu.hyg.service.DishServiceImpl;
    
 
@@ -55,7 +59,9 @@ public class DishController {
 	     session.setAttribute("orderbuyList", orderList);
 	     session.setAttribute("sellerId", user_id);
 	    return dishBuyMain(request, session);
-	}				
+	}
+	
+	
 	@RequestMapping("d")
     public String dishBuyMain(HttpServletRequest request,HttpSession session ){
 		return "main";		 
@@ -105,5 +111,22 @@ public class DishController {
 			}
 		}
 		return "main";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/dishList")
+	public List<Dish> getUserList(Model model , HttpSession session) {
+		 Grid grid = new Grid();
+		 User user = (User)session.getAttribute("userBean");
+		 List<Dish> list  = new ArrayList<>() ;
+		 if("2".equals(user.getRole())){
+			 list = dishserviceImpl.queryByUser(user.getId());
+			}else if("3".equals(user.getRole())){
+			 list = dishserviceImpl.queryByName(user.getUsername());
+			}
+		 model.addAttribute("userList", list);
+		 grid.setRows(list);
+		 grid.setTotal((long)list.size());
+		 return list;
 	}
 }

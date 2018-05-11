@@ -77,7 +77,7 @@
 	
 	<script type="text/javascript">	   
 	function selectorder(){
-	     window.location.href="${pageContext.request.contextPath}/selectOrderFen.action";
+	     window.location.href="${pageContext.request.contextPath}/jsp/orderInfomation.jsp";
 	}
 	function selectdish1(){
 	
@@ -121,15 +121,13 @@
 					</div>  
 			<div class="panel panel-default">
 		  	<div class="panel-heading">
-			        <button type="button" class="btn btn-success">精致小炒</button>
-			        <button type="button" class="btn btn-success">全部</button>
 		  		  <c:choose>
 		  		 	  <c:when test="${userBean.role eq '2' }">
 		  		 	  		<button type="button" class="btn btn-success" onclick="addDish()">菜品新增</button>
 			  				<button type="button" class="btn btn-success" onclick="selectdish1()">菜品管理</button>
 					        <button type="button" class="btn btn-success" onclick="selectorder()">查询订单</button>
 		  		 	  </c:when>
-		  		 	   <c:when test="${userBean.role eq '3' }">
+		  		 	  <c:when test="${userBean.role eq '3' }">
 					  		 <button type="button" class="btn btn-success" onclick="returnMian()">返回</button>
 		  		 	  </c:when>
 		  		 </c:choose>

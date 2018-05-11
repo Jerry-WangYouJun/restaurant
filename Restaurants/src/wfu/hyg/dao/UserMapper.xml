@@ -23,8 +23,8 @@
 </select>
 
 <insert id="insert" parameterType="wfu.hyg.pojo.User">
-		insert into t_user(username,password,role) values
-		('${username}','${password}','${role}')
+		insert into t_user(username,password,role,img) values
+		('${username}','${password}','${role}','${img}')
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
 			select LAST_INSERT_ID()
 		</selectKey>
@@ -35,7 +35,9 @@
     set 
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      role = #{role,jdbcType=VARCHAR}
+      role = #{role,jdbcType=VARCHAR},
+      money= #{money,jdbcType=DOUBLE},
+      img=#{img,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
 	

@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     
    <jsp:include page="/common.jsp"></jsp:include>
-
+   <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
   </head>
   
   <body class="easyui-layout">
@@ -64,24 +64,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				]],				
 			});
 		});
+	
 		function user_add(){
 			$('#user_dlg').dialog('open');	
 			$('#user_dlg').dialog('setTitle','添加用户');
 			$("#user_save").unbind('click').click(function(){
-  				$.ajax({
-  					type:'post',
-					url : '${pageContext.request.contextPath}/user/user_add.action',
-					data : $('#user_form').serialize(),
-					dataType : 'json',
-					success : function(obj) {
-						if (obj.success) {
+				$("#user_form").ajaxSubmit({
+ 					url : "${pageContext.request.contextPath}/user/user_add.action",
+ 					type : 'post',
+ 					dataType : 'json',
+ 					success : function(obj) {
+ 						if (obj.success) {
 							alert(obj.msg);
 							user_close();
 						} else {
 							alert(obj.msg);
 						}
-					}
-				});
+ 					},
+ 					error : function(transport) {
+ 						$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
+ 					}
+ 				});
 			});
 		}
 		function user_edit(){
@@ -93,20 +96,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			//updateCombox(roleId,row.roleId);
     			//updateCombox(companyId,row.companyId);
 				$("#user_save").unbind('click').click(function(){
-  					$.ajax({
-  						type:'post',
-						url : '${pageContext.request.contextPath}/user/user_update.action',
-						data : $('#user_form').serialize(),
-						dataType : 'json',
-						success : function(obj) {
-							if (obj.success) {
+					$("#user_form").ajaxSubmit({
+	 					url : "${pageContext.request.contextPath}/user/user_update.action",
+	 					type : 'post',
+	 					dataType : 'json',
+	 					success : function(obj) {
+	 						if (obj.success) {
 								alert(obj.msg);
 								user_close();
 							} else {
 								alert(obj.msg);
 							}
-						}
-					});
+	 					},
+	 					error : function(transport) {
+	 						$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
+	 					}
+	 				});
 				});
 			}
     	}
@@ -157,7 +162,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<div  id="user_dlg" closed="true" class="easyui-dialog" style="width:400px;height: 400px"
 	data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:50,buttons: '#user_dlg_buttons'">
-    	<form id="user_form" role="form" style="padding: 20px">
+    	<form id="user_form" role="form" style="padding: 20px" enctype="application/x-www-form-urlencoded">
     			<div class="form-group col-md-12">
             		<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">用户名：</label>
                 <input name="username" type="text" style="display: inline-block;width: 70%">
@@ -174,6 +179,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	   		<option value="3">消费用户</option>
                 </select>
             </div>
+            <div class="form-group col-md-12">
+	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">实验照片：</label>
+	                <input type="file" id="upfile" name="upfile" class=" form-control" style="display: inline-block;width: 70%">
+	        </div>
             <input id="id" name="id" style="display:none;"/> 
     	</form>                 
     </div>
