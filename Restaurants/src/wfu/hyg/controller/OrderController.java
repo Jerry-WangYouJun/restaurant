@@ -162,6 +162,13 @@ public class OrderController {
 					 map.put("state", state);
 				}
 				List<OrderBean> list = orderservice.selectOrderAll(map);
+				for(OrderBean  ob : list) {
+					Order temp = new Order();
+					temp.setOrder_number(ob.getOrderid());
+					 List<Order> orderDetailList = orderservice.selectOrderDetail(temp);
+					 if(orderDetailList.size() > 0)
+						 ob.setLocation(orderDetailList.get(0).getLocation());
+				}
 				request.setAttribute("orderList",  list );
 				return list;
 	}

@@ -93,7 +93,20 @@
 	                	 	 return '';
 	                 }
 	             }
-	        }],  
+	        }, {  
+		           field : 'location',  
+		            title : '订单状态',  
+		             align: 'center',  
+		             valign: 'middle'  ,
+		             formatter : function (value, row, index) {
+		            	  console.info(value);
+		                if (value === '1') {
+		                     return '外带';
+		                 }else{
+		                	 	 return '在店用餐';
+		                 }
+		             }
+		        }],  
 	        silent : true, // 刷新事件必须设置  
 	               
 	    });  

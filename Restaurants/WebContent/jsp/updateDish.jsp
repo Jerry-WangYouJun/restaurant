@@ -84,8 +84,16 @@ a {
 											<td>在售状态</td>
 											<td>
 											    <select name="dish_state" class="selecter" >
-													<option value="1">在售</option>
-													<option value="2">售罄</option>
+											    <c:choose>
+											    		<c:when test="${dish.dish_state eq '2'}">
+														<option value="2">售罄</option>
+														<option value="1">在售</option>
+											    		</c:when>
+											    		<c:otherwise>
+														<option value="1">在售</option>
+														<option value="2">售罄</option>
+											    		</c:otherwise>
+											    </c:choose>
 												</select>
 											</td>
 										</tr>
@@ -100,11 +108,21 @@ a {
 									</tr>
 									<tr>
 										<td>图片上传</td>
-										<td><input type="file" id="upfile" name="upfile" class="upPic"/></td>
+										<td><input type="file" id="upfile" name="upfile" class="upPic" value="${empty dish.dish_img }"/>
+											<a id="" href="/upload/${dish.dish_img}">${dish.dish_img}</a></td>
 									</tr>
 									<tr>
-										<td></td>
-										<td><img class="miniPic" src="image/login.jpg" /></td>
+										<td>${ dish.dish_img}</td>
+										<td>
+										<c:choose>
+											 <c:when test="${empty dish.dish_img }">
+											 	<img class="miniPic" src="image/login.jpg" />
+											 </c:when>
+											 <c:otherwise>
+													<img class="miniPic" src="/upload/${dish.dish_img}" />
+											 </c:otherwise>
+										</c:choose>
+										</td>
 									</tr>
 									<tr>
 										<td></td>
@@ -127,6 +145,10 @@ a {
 	
 	<script type="text/javascript">
 			  function addDishNew(){
+				  if($("#upfile").val == "" && $("#imgUrl").text() ==""){
+					   alert("必须上传图片");
+					   return ;
+				  }
 				  $("#dataForm").ajaxSubmit({
 	  					url : "${pageContext.request.contextPath}/ajaxupdate_dish.action",
 	  					type : 'post',

@@ -17,6 +17,7 @@ public class OrderBean {
     
     private String isCash;
 
+    private String location;
     public Integer getId() {
         return id;
     }
@@ -84,6 +85,14 @@ public class OrderBean {
 
 	public void setS_id(Integer s_id) {
 		this.s_id = s_id;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public OrderBean(Integer orderid, String money, String state,

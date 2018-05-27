@@ -148,7 +148,16 @@
 				      				</div>
 				      				<c:if test="${userBean.role eq '3' }">
 					      				<div class="col-md-6 col-sm-6">
-					      				 	<a href="${pageContext.request.contextPath}/dishbuy.action?name1=${list.dish_name}&price1=${list.dish_price}&id=${list.dish_id}&user_id=${list.user_id}" target="_parent"><button type="button" class="btn btn-primary btn_left">Buy</button></a>
+					      				 	<a href="${pageContext.request.contextPath}/dishbuy.action?name1=${list.dish_name}&price1=${list.dish_price}&id=${list.dish_id}&user_id=${list.user_id}" target="_parent">
+					      				 		<c:choose>
+					      				 			 <c:when test="${list.dish_state eq '2' }">
+					      				 			 		<button type="button" class="btn btn-primary btn_left" disabled="disabled">售罄</button>
+					      				 			 </c:when>
+					      				 			 <c:otherwise>
+					      				 			 	 <button type="button" class="btn btn-primary btn_left">Buy</button>
+					      				 			 </c:otherwise>
+					      				 		</c:choose>
+					      				 	</a>
 					      				</div>     				
 				      				</c:if>
 				      			</div>
