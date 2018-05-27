@@ -108,11 +108,11 @@ a {
 									</tr>
 									<tr>
 										<td>图片上传</td>
-										<td><input type="file" id="upfile" name="upfile" class="upPic" value="${empty dish.dish_img }"/>
+										<td><input type="file" id="upfile" name="upfile" class="upPic" />
 											<a id="" href="/upload/${dish.dish_img}">${dish.dish_img}</a></td>
 									</tr>
 									<tr>
-										<td>${ dish.dish_img}</td>
+										<td></td>
 										<td>
 										<c:choose>
 											 <c:when test="${empty dish.dish_img }">
@@ -145,7 +145,7 @@ a {
 	
 	<script type="text/javascript">
 			  function addDishNew(){
-				  if($("#upfile").val == "" && $("#imgUrl").text() ==""){
+				  if($("#upfile").val == "" ){
 					   alert("必须上传图片");
 					   return ;
 				  }

@@ -93,6 +93,20 @@
 	                	 	 return '';
 	                 }
 	             }
+	        },{
+	        		field:'isCash',
+	        		title:'是否现金',
+	        		 align: 'center',  
+		             valign: 'middle'  ,
+		             formatter : function (value, row, index) {
+		                if (value === '0') {
+		                     return '刷卡';
+		                 }else  if (value === '1') {
+		                     return '现金';
+		                 }else{
+		                	 	 return '';
+		                 }
+		             }
 	        }, {  
 		           field : 'location',  
 		            title : '订单状态',  
