@@ -77,18 +77,17 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value="/user_add",method=RequestMethod.POST)
-	public Map addUser(User user ,@RequestParam("upfile") MultipartFile[] files
-			, HttpServletResponse response ){
+	public Map addUser(User user , HttpServletResponse response ){
 		Map<String,Object> result = new HashMap<String,Object>();
-		PrintWriter out;
-		try {
-			for(MultipartFile file:files){
-				user.setImg(file.getOriginalFilename());
-				CodeUtil.SaveFileFromInputStream(file );
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		PrintWriter out;
+//		try {
+//			for(MultipartFile file:files){
+//				user.setImg(file.getOriginalFilename());
+//				CodeUtil.SaveFileFromInputStream(file );
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		int rows = this.userService.inserUser(user);
 		if (rows > 0) {
 			result.put("success", true);
@@ -102,18 +101,18 @@ public class UserController {
 	
 	@ResponseBody   //转成JSON字符串
 	@RequestMapping(value="/user_update",method=RequestMethod.POST)
-	public Map updateUser(User user ,@RequestParam("upfile") MultipartFile[] files
+	public Map updateUser(User user 
 			, HttpServletResponse response){
 		Map map = new HashMap();
-		PrintWriter out;
-		try {
-			for(MultipartFile file:files){
-				user.setImg(file.getOriginalFilename());
-				CodeUtil.SaveFileFromInputStream(file );
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		PrintWriter out;
+//		try {
+//			for(MultipartFile file:files){
+//				user.setImg(file.getOriginalFilename());
+//				CodeUtil.SaveFileFromInputStream(file );
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		int rows = this.userService.updateUser(user);
 		if (rows > 0) {
 			map.put("success", true);

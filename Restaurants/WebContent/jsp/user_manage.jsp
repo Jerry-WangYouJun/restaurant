@@ -172,18 +172,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <input name="password" type="text" style="display: inline-block;width: 70%">
             </div>
             <div class="form-group col-md-12">
-            		<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">密码：</label>
+            		<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">角色：</label>
                 <select name="role" style="display: inline-block;width: 70%">
                 	   		<option value="1">管理员</option>
                 	   		<option value="2">商户</option>
                 	   		<option value="3">消费用户</option>
                 </select>
             </div>
-            <div class="form-group col-md-12">
+<!--             <div class="form-group col-md-12">
 	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">实验照片：</label>
 	                <input type="file" id="upfile" name="upfile" class=" form-control" style="display: inline-block;width: 70%">
 	        </div>
-            <input id="id" name="id" style="display:none;"/> 
+ -->            <input id="id" name="id" style="display:none;"/> 
     	</form>                 
     </div>
 </body>
